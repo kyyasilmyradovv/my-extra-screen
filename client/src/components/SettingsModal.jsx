@@ -23,6 +23,8 @@ const SettingsModal = ({
   onRestTimeChange,
   showTabs,
   onShowTabsChange,
+  clockType,
+  onClockTypeChange,
 }) => {
   const [selectedFormat, setSelectedFormat] = useState(timeFormat);
   const [showSecondsValue, setShowSecondsValue] = useState(showSeconds);
@@ -32,6 +34,7 @@ const SettingsModal = ({
   const [workTimeValue, setWorkTimeValue] = useState(workTime);
   const [restTimeValue, setRestTimeValue] = useState(restTime);
   const [showTabsValue, setShowTabsValue] = useState(showTabs);
+  const [clockTypeValue, setClockTypeValue] = useState(clockType);
   const [backgroundColorValue, setBackgroundColorValue] = useState(() => {
     const saved = localStorage.getItem('backgroundColor');
     return saved || 'default';
@@ -64,6 +67,10 @@ const SettingsModal = ({
   useEffect(() => {
     setShowTabsValue(showTabs);
   }, [showTabs]);
+
+  useEffect(() => {
+    setClockTypeValue(clockType);
+  }, [clockType]);
 
   useEffect(() => {
     if (isOpen) {
@@ -111,6 +118,11 @@ const SettingsModal = ({
     onShowTabsChange(checked);
   };
 
+  const handleClockTypeChange = (type) => {
+    setClockTypeValue(type);
+    onClockTypeChange(type);
+  };
+
   const handleBackgroundColorChange = (colorId) => {
     setBackgroundColorValue(colorId);
     localStorage.setItem('backgroundColor', colorId);
@@ -149,6 +161,40 @@ const SettingsModal = ({
           >
             <CloseIcon />
           </button>
+        </div>
+
+        {/* Clock Type Setting */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-white/90 mb-3">
+            Clock Type
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { id: 'digital', name: 'Digital', icon: '🕐' },
+              { id: 'minimal', name: 'Minimal', icon: '🕒' },
+              { id: 'modern', name: 'Modern', icon: '🕓' },
+            ].map((type) => (
+              <button
+                key={type.id}
+                onClick={() => handleClockTypeChange(type.id)}
+                className={`relative p-4 rounded-xl border-2 transition-all hover:scale-105 ${
+                  clockTypeValue === type.id
+                    ? 'border-indigo-500 bg-indigo-500/20 ring-2 ring-indigo-500/50'
+                    : 'border-white/20 bg-white/5 hover:border-white/40'
+                }`}
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <span className="text-2xl">{type.icon}</span>
+                  <span className="text-sm font-medium text-white/90">
+                    {type.name}
+                  </span>
+                </div>
+                {clockTypeValue === type.id && (
+                  <div className="absolute top-2 right-2 w-2 h-2 bg-indigo-500 rounded-full"></div>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Time Format Setting */}

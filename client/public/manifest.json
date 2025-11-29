@@ -1,6 +1,6 @@
 {
   "name": "My Extra Screen - Clock, Timer & Pomodoro",
-  "short_name": "Extra Screen",
+  "short_name": "My Extra Screen",
   "description": "Beautiful clock, timer, and Pomodoro timer for your extra monitor. Transform your extra screen into an ambient productivity display.",
   "start_url": "/",
   "display": "fullscreen",

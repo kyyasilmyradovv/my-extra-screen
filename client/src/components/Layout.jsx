@@ -62,6 +62,11 @@ const Layout = ({
     const saved = localStorage.getItem('showTabs');
     return saved !== null ? saved === 'true' : true;
   });
+  const [clockType, setClockType] = useState(() => {
+    // Load from localStorage or default to 'digital'
+    const saved = localStorage.getItem('clockType');
+    return saved || 'digital';
+  });
 
   const handleTimeFormatChange = (format) => {
     setTimeFormat(format);
@@ -91,6 +96,11 @@ const Layout = ({
   const handleShowTabsChange = (show) => {
     setShowTabs(show);
     localStorage.setItem('showTabs', show.toString());
+  };
+
+  const handleClockTypeChange = (type) => {
+    setClockType(type);
+    localStorage.setItem('clockType', type);
   };
 
   // Fullscreen functionality
@@ -160,7 +170,11 @@ const Layout = ({
 
       {/* Content based on active tab */}
       {activeTab === 'clock' ? (
-        <Clock timeFormat={timeFormat} showSeconds={showSeconds} />
+        <Clock
+          timeFormat={timeFormat}
+          showSeconds={showSeconds}
+          clockType={clockType}
+        />
       ) : (
         <Pomodoro workTime={workTime} restTime={restTime} />
       )}
@@ -199,6 +213,8 @@ const Layout = ({
         onRestTimeChange={handleRestTimeChange}
         showTabs={showTabs}
         onShowTabsChange={handleShowTabsChange}
+        clockType={clockType}
+        onClockTypeChange={handleClockTypeChange}
       />
 
       {/* Contact Modal */}

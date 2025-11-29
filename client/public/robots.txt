@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://myextrascreen.com/sitemap.xml
+Sitemap: https://my-extra-screen.com/sitemap.xml
 
