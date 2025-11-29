@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
+import { getApiUrl } from '../utils/api';
 
 const ContactModal = ({ isOpen, onClose }) => {
   const [title, setTitle] = useState('');
   const [message, setMessage] = useState('');
   const [contactInfo, setContactInfo] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -18,24 +21,47 @@ const ContactModal = ({ isOpen, onClose }) => {
       setMessage('');
       setContactInfo('');
       setIsSuccess(false);
+      setError(null);
+      setIsLoading(false);
     }
     return () => {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement API call
-    console.log('Sending:', { title, message, contactInfo });
+    setIsLoading(true);
+    setError(null);
 
-    // Show success message
-    setIsSuccess(true);
+    try {
+      const response = await fetch(getApiUrl('/contact-developer'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: title || '',
+          message: message || '',
+          contact: contactInfo || '',
+        }),
+      });
 
-    // Auto close after 7 seconds
-    setTimeout(() => {
-      onClose();
-    }, 5000);
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
+
+      // Show success message
+      setIsSuccess(true);
+
+      // Auto close after 5 seconds
+      setTimeout(() => {
+        onClose();
+      }, 5000);
+    } catch (err) {
+      setError(err.message);
+      console.error('Error sending message:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -96,6 +122,12 @@ const ContactModal = ({ isOpen, onClose }) => {
         ) : (
           /* Form */
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-4 text-red-400 text-sm">
+                {error}
+              </div>
+            )}
             {/* Title Input */}
             <div>
               <label
@@ -148,17 +180,18 @@ const ContactModal = ({ isOpen, onClose }) => {
                 value={contactInfo}
                 onChange={(e) => setContactInfo(e.target.value)}
                 className="w-full bg-[#2d3748] border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                placeholder="Your email, Twitter handle, or any way to reach you"
+                placeholder="Your email, or any way to reach you"
               />
             </div>
 
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
+              disabled={isLoading}
+              className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:bg-indigo-500/50 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <SendIcon />
-              Send Message
+              {isLoading ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         )}
