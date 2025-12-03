@@ -92,7 +92,7 @@ const AboutModal = ({ isOpen, onClose }) => {
 
                 <div className="flex items-center gap-4 mb-4">
                   <a
-                    href="https://github.com/kyyasilmyradovv"
+                    href="https://github.com/kyyasdev"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-white transition-colors flex items-center gap-2"
@@ -101,7 +101,7 @@ const AboutModal = ({ isOpen, onClose }) => {
                     <span className="text-sm">GitHub</span>
                   </a>
                   <a
-                    href="https://www.linkedin.com/in/kyyasilmyradov"
+                    href="https://www.linkedin.com/in/kyyasdev"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/70 hover:text-white transition-colors flex items-center gap-2"
