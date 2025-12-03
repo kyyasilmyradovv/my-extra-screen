@@ -28,10 +28,10 @@ def get_db():
 db_dependency = Annotated[Session, Depends(get_db)]
 
 # Set CORS origins based on environment
-environment = os.getenv("ENVIRONMENT").lower()
+environment = os.getenv("ENVIRONMENT")
 if environment == "production":
-    production_domain = os.getenv("PRODUCTION_DOMAIN").lower()
-    allowed_origins = [production_domain]
+    production_domains = os.getenv("PRODUCTION_DOMAINS")
+    allowed_origins = production_domains.split(",")
 else:
     allowed_origins = ["*"]  # Allow all origins in development
 

@@ -1,0 +1,21 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Exclude generated/vendored files from language stats
+client/dist/** linguist-generated
+client/node_modules/** linguist-vendored
+api/venv/** linguist-vendored
+*.min.js linguist-generated
+*.min.css linguist-generated
+
+# Ensure these file types are detected
+*.py linguist-detectable=true
+*.js linguist-detectable=true
+*.jsx linguist-detectable=true
+*.html linguist-detectable=true
+*.css linguist-detectable=true
+
+# Don't count config/lock files as code
+package-lock.json linguist-detectable=false
+*.lock linguist-detectable=false
+

@@ -24,7 +24,7 @@ Create `.env` in `api/`:
 ```env
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
 ENVIRONMENT=development
-PRODUCTION_DOMAIN=https://abc.com
+PRODUCTION_DOMAIN=https://abc.com,https://www.abc.com
 ```
 
 Init DB:
